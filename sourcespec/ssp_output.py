@@ -323,15 +323,17 @@ def _write_qml(config, sourcepar):
         origin = ev.origins[0]
     origin_id = origin.resource_id
     origin_id_strip = origin_id.id.split('/')[-1]
-    origin_id_strip = origin_id_strip.replace('Origin', '')
+    origin_id_strip = origin_id_strip.replace(
+        config.smi_strip_from_origin_id, '')
+    _id = config.smi_magnitude_template.replace('$SMI_BASE', config.smi_base)
+    _id = _id.replace('$ORIGIN_ID', origin_id_strip)
 
     means = sourcepar['means']
     errors = sourcepar['errors']
 
     mag = Magnitude()
-    _id = 'smi:scs/0.7/Magnitude' + origin_id_strip + '.sourcespec'
     mag.resource_id = ResourceIdentifier(id=_id)
-    _id = 'smi:scs/0.7/sourcespec/' + get_git_version()
+    _id = config.smi_base + '/sourcespec/' + get_git_version()
     mag.method_id = ResourceIdentifier(id=_id)
     mag.origin_id = origin_id
     mag.magnitude_type = 'Mw'
@@ -359,7 +361,11 @@ def _write_qml(config, sourcepar):
         par = sourcepar[statId]
         st_mag = StationMagnitude()
         seed_id = statId.split()[0]
-        _id = mag.resource_id.id + '#' + seed_id
+        _id = config.smi_station_magnitude_template.replace(
+            '$SMI_MAGNITUDE_TEMPLATE', config.smi_magnitude_template)
+        _id = _id.replace('$ORIGIN_ID', origin_id_strip)
+        _id = _id.replace('$SMI_BASE', config.smi_base)
+        _id = _id.replace('$WAVEFORM_ID', seed_id)
         st_mag.resource_id = ResourceIdentifier(id=_id)
         st_mag.origin_id = origin_id
         st_mag.mag = par['Mw']
