@@ -210,7 +210,10 @@ def _write_qml(config, sourcepar):
         ev.extra.source_radius.value.confidence_level = SSPTag(68.2)
         ev.extra.stress_drop = SSPContainerTag()
         ev.extra.stress_drop.value.value = SSPTag(means['bsd'])
-        ev.extra.stress_drop.value.uncertainty = SSPTag(errors['bsd'])
+        ev.extra.stress_drop.value.lower_uncertainty =\
+            SSPTag(errors['bsd'][0])
+        ev.extra.stress_drop.value.upper_uncertainty =\
+            SSPTag(errors['bsd'][1])
         ev.extra.stress_drop.value.confidence_level = SSPTag(68.2)
     else:
         ev.extra.corner_frequency = SSPTag(means['fc'])
@@ -225,7 +228,8 @@ def _write_qml(config, sourcepar):
         ev.extra.source_radius_upper_uncertainty = SSPTag(errors['ra'][1])
         ev.extra.source_radius_confidence_level = SSPTag(68.2)
         ev.extra.stress_drop = SSPTag(means['bsd'])
-        ev.extra.stress_drop_uncertainty = SSPTag(errors['bsd'])
+        ev.extra.stress_drop_lower_uncertainty = SSPTag(errors['bsd'][0])
+        ev.extra.stress_drop_upper_uncertainty = SSPTag(errors['bsd'][1])
         ev.extra.stress_drop_confidence_level = SSPTag(68.2)
 
     if config.set_preferred_magnitude:
