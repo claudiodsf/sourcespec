@@ -160,7 +160,7 @@ def _write_qml(config, sourcepar):
 
     # Station magnitudes
     for statId in sorted(sourcepar.keys()):
-        if statId in ['means', 'errors']:
+        if statId in ['means', 'errors', 'means_weight', 'errors_weight']:
             continue
         par = sourcepar[statId]
         st_mag = StationMagnitude()
